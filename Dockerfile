@@ -21,13 +21,11 @@ RUN apt-get update && \
     apt-get -y dist-upgrade && \
     sed -i.bak 's/sid main/sid main contrib/g' /etc/apt/sources.list && \
     apt-get update && apt-get install -y \
-    iceweasel \
     gnupg \
     zenity \
     ca-certificates \
     xz-utils \
     curl \
-    sudo \
     --no-install-recommends && \
     localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || :
 
