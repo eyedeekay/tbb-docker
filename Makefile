@@ -58,10 +58,10 @@ torhost: echo docker-torhost network
 		--hostname tor-host \
 		--link tor-host \
 		--ip $(DEFAULT_HOST) \
-		eyedeekay/tor-host
+		eyedeekay/tor-host; true
 
-browse: echo docker-browser torhost network docker-clean-host
-	docker run --rm -i -t -d \
+browse: echo docker-browser torhost network docker-clean-browser
+	docker run --rm -i -t \
 		-e DISPLAY=$(DISPLAY) \
 		-e BROWSER_VERSION="$(BROWSER_VERSION)" \
 		--net tbb \

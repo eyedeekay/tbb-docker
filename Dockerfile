@@ -26,6 +26,7 @@ RUN apt-get update && \
     ca-certificates \
     xz-utils \
     curl \
+    iceweasel \
     --no-install-recommends && \
     localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || :
 

@@ -4,8 +4,7 @@ FROM alpine:3.7
 #ARG TOR_CONTROL_PORT=9151
 #ARG TOR_SOCKS_HOST=127.0.0.1
 #ARG TOR_SOCKS_PORT=9150
-RUN apk update
-RUN apk add tor
+RUN apk update && apk add tor
 COPY torrc /etc/tor/torrc
 RUN mkdir -p /var/lib/tor
 RUN chown -R tor /var/lib/tor
