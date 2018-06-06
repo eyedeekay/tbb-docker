@@ -32,7 +32,7 @@ echo:
 	@echo "$(BROWSER_VERSION) $(browser)"
 
 network:
-	docker network create --subnet 255.255.255.248/29 tbb; true
+	docker network create --subnet 172.70.70.0/29 tbb; true
 
 docker-browser: network
 	docker build --force-rm \
