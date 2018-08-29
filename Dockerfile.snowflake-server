@@ -1,0 +1,6 @@
+FROM alpine:3.7
+RUN apk add tor go git go-tools
+RUN git clone https://git.torproject.org/pluggable-transports/snowflake.git /opt/snowflake && \
+    cd opt/snowflake/server && \
+    go get && \
+    go build

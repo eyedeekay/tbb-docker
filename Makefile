@@ -4,11 +4,10 @@ browser=$(PWD)/browser
 UPDATE_URL=https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions
 
 #COMMENT THE FOLLOWING LINE IF YOU WANT TO USE THE EXPERIMENTAL TBB
-BROWSER_VERSION=$(shell curl $(UPDATE_URL) 2> /dev/null | head -n 2 | tail -n 1 | tr -d '",')
+BROWSER_VERSION = $(shell curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",')
 
 #UNCOMMENT THE FOLLOWING LINES IF YOU WANT TO USE THE EXPERIMENTAL TBB
-BROWSER_VERSION=8.0a7
-#BROWSER_VERSION=0.0.16
+#BROWSER_VERSION=8.0a10
 
 DEFAULT_SOCKS_PORT=9150
 DEFAULT_CONTROL_PORT=9151
@@ -72,6 +71,16 @@ browse: echo docker-browser torhost network docker-clean-browser
 		--volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
 		--volume $(browser):/home/anon/tor-browser_en-US/Browser/Desktop \
 		eyedeekay/tor-browser
+
+anti-douchelord: docker-snowflake snowflake
+
+docker-snowflake: docker-snowflake-client
+
+docker-snowflake-client:
+	docker build -f Dockerfile.snowflake-server \
+		-t eyedeekay/snowflake-server .
+
+snowflake:
 
 docker-clean-browser:
 	docker rm -f tor-browser; true

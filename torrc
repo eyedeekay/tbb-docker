@@ -2,7 +2,7 @@
 
 SOCKSPort 172.70.70.2:9150
 
-SOCKSPolicy accept 255.255.255.248/29
+SOCKSPolicy accept 172.70.70.0/24
 
 DataDirectory /var/lib/tor
 
@@ -12,3 +12,9 @@ ControlPort 172.70.70.2:9151
 ## authentication methods, to prevent attackers from accessing it.
 #HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
 CookieAuthentication 1
+
+ClientTransportPlugin snowflake exec ./client \
+    -url https://snowflake-broker.azureedge.net/ \
+    -front ajax.aspnetcdn.com \
+    -ice stun:stun.l.google.com:19302 \
+    -max 3
