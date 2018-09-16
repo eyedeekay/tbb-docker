@@ -97,3 +97,15 @@ docker-clobber-host: docker-clean-host
 docker-clean: docker-clean-browser docker-clean-host
 
 docker-clobber: docker-clobber-browser docker-clobber-host
+
+i2p:
+	cd ../i2p-manifest/tb-profile-i2p && \
+		docker build --no-cache -f Dockerfile . && \
+		docker run --rm -i -t \
+		-e DISPLAY=$(DISPLAY) \
+		-e BROWSER_VERSION="$(BROWSER_VERSION)" \
+		--net host \
+		--name tb-profile-i2p \
+		--hostname tb-profile-i2p \
+		--volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
+		eyedeekay/tb-profile-i2p
