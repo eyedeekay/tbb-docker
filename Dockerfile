@@ -17,9 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TOR_SKIP_LAUNCH=$TOR_SKIP_LAUNCH \
     TOR_SKIP_CONTROLPORTTEST=$TOR_SKIP_CONTROLPORTTEST
 
-RUN while true; do \
-    apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA && break; done && true
-
+RUN apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
 RUN echo "deb http://deb.whonix.org stretch main" | tee /etc/apt/sources.list.d/whonix.list
 
 RUN apt-get update && \
