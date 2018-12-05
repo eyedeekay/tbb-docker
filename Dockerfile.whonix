@@ -1,5 +1,8 @@
 FROM eyedeekay/whonix
+USER root
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install -y tb-starter tb-updater
+USER user
+WORKDIR /home/user
 RUN update-torbrowser --devbuildpassthrough
 CMD torbrowser
