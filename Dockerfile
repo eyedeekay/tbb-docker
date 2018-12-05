@@ -45,10 +45,10 @@ USER anon
 
 WORKDIR /home/anon
 
-RUN BROWSER_VERSION=$(curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz \
+RUN BROWSER_VERSION=$(curl $UPDATE_URL 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz \
       https://www.torproject.org/dist/torbrowser/${BROWSER_VERSION}/tor-browser-linux64-${BROWSER_VERSION}_en-US.tar.xz
 
-RUN BROWSER_VERSION=$(curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz.asc \
+RUN BROWSER_VERSION=$(curl $UPDATE_URL 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz.asc \
       https://www.torproject.org/dist/torbrowser/${BROWSER_VERSION}/tor-browser-linux64-${BROWSER_VERSION}_en-US.tar.xz.asc
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net \
