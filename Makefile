@@ -99,8 +99,6 @@ docker-clean: docker-clean-browser docker-clean-host
 docker-clobber: docker-clobber-browser docker-clobber-host
 
 i2p:
-	cd ../i2p-manifest/tb-profile-i2p && \
-		docker build --force-rm -f Dockerfile . && \
 		docker run --rm -i -t \
 		-e DISPLAY=$(DISPLAY) \
 		-e BROWSER_VERSION="$(BROWSER_VERSION)" \
