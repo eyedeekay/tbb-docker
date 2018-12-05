@@ -1,0 +1,4 @@
+FROM eyedeekay/whonix:stable
+RUN apt-get install -y tb-starter tb-updater
+RUN update-torbrowser --devbuildpassthrough
+CMD torbrowser
