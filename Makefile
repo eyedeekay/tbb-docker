@@ -4,7 +4,7 @@ browser=$(PWD)/browser
 UPDATE_URL=https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions
 
 #COMMENT THE FOLLOWING LINE IF YOU WANT TO USE THE EXPERIMENTAL TBB
-BROWSER_VERSION = $(shell curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",')
+#BROWSER_VERSION = $(shell curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",')
 
 #UNCOMMENT THE FOLLOWING LINES IF YOU WANT TO USE THE EXPERIMENTAL TBB
 #BROWSER_VERSION=8.0a10
@@ -35,7 +35,6 @@ network:
 
 docker-browser: network
 	docker build --force-rm \
-		--build-arg BROWSER_VERSION="$(BROWSER_VERSION)" \
 		--build-arg TOR_SOCKS_PORT="$(TOR_SOCKS_PORT)" \
 		--build-arg TOR_SOCKS_HOST="$(TOR_SOCKS_HOST)" \
 		--build-arg TOR_CONTROL_PORT="$(TOR_CONTROL_PORT)" \
@@ -62,7 +61,6 @@ torhost: echo docker-torhost network
 browse: echo docker-browser torhost network docker-clean-browser
 	docker run --rm -i -t \
 		-e DISPLAY=$(DISPLAY) \
-		-e BROWSER_VERSION="$(BROWSER_VERSION)" \
 		--net tbb \
 		--name tor-browser \
 		--hostname tor-browser \

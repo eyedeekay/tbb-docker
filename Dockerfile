@@ -1,5 +1,4 @@
 FROM debian:sid
-ARG BROWSER_VERSION="7.5.6"
 ARG TOR_CONTROL_HOST=127.0.0.1
 ARG TOR_CONTROL_PORT=9151
 ARG TOR_SOCKS_HOST=127.0.0.1
@@ -17,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TOR_SKIP_LAUNCH=$TOR_SKIP_LAUNCH \
     TOR_SKIP_CONTROLPORTTEST=$TOR_SKIP_CONTROLPORTTEST
 
-RUN apt-get install -y gnupg2
+RUN apt-get install -y gnupg2 curl
 RUN apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
 RUN echo "deb http://deb.whonix.org stretch main" | tee /etc/apt/sources.list.d/whonix.list
 
@@ -44,10 +43,10 @@ USER anon
 
 WORKDIR /home/anon
 
-RUN curl -sSL -o /home/anon/tor.tar.xz \
+RUN BROWSER_VERSION=$(curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz \
       https://www.torproject.org/dist/torbrowser/${BROWSER_VERSION}/tor-browser-linux64-${BROWSER_VERSION}_en-US.tar.xz
 
-RUN curl -sSL -o /home/anon/tor.tar.xz.asc \
+RUN BROWSER_VERSION=$(curl $(UPDATE_URL) 2> /dev/null | grep -vi macos | grep -vi windows | grep -vi linux | head -n 2 | tail -n 1 | tr -d '",') && curl -sSL -o /home/anon/tor.tar.xz.asc \
       https://www.torproject.org/dist/torbrowser/${BROWSER_VERSION}/tor-browser-linux64-${BROWSER_VERSION}_en-US.tar.xz.asc
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net \
