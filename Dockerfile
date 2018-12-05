@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TOR_SKIP_LAUNCH=$TOR_SKIP_LAUNCH \
     TOR_SKIP_CONTROLPORTTEST=$TOR_SKIP_CONTROLPORTTEST
 
-RUN apt-get install -y gpgv curl
+RUN apt-get update && apt-get install -y gpgv curl
 RUN apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
 RUN echo "deb http://deb.whonix.org stretch main" | tee /etc/apt/sources.list.d/whonix.list
 
