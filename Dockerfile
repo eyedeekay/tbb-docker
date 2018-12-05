@@ -6,6 +6,7 @@ ARG TOR_SOCKS_PORT=9150
 ARG TOR_FORCE_NET_CONFIG=0
 ARG TOR_SKIP_LAUNCH=1
 ARG TOR_SKIP_CONTROLPORTTEST=1
+ARG UPDATE_URL=https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/home/anon \
@@ -14,7 +15,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TOR_SOCKS_PORT=$TOR_SOCKS_PORT \
     TOR_SOCKS_HOST=$TOR_SOCKS_HOST \
     TOR_SKIP_LAUNCH=$TOR_SKIP_LAUNCH \
-    TOR_SKIP_CONTROLPORTTEST=$TOR_SKIP_CONTROLPORTTEST
+    TOR_SKIP_CONTROLPORTTEST=$TOR_SKIP_CONTROLPORTTEST \
+    UPDATE_URL=https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions
 
 RUN apt-get update && apt-get install -y gnupg curl
 RUN apt-key --keyring /etc/apt/trusted.gpg.d/whonix.gpg adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
