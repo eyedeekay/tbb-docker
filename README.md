@@ -9,6 +9,11 @@ a reputable organization like the Tor Project.
 Dockerfile 1: Tor Browser Bundle
 ================================
 
+This dockerfile downloads and configures a Tor Browser Bundle from the latest
+version recommended by the Tor Project. It makes the environment variables
+that can configure the Tor Browser Bundle available to docker build and docker
+run.
+
 ## Inherit base environment
         FROM debian:sid
 
@@ -83,6 +88,71 @@ Dockerfile 1: Tor Browser Bundle
         USER anon
         CMD /home/anon/tor-browser_en-US/Browser/start-tor-browser
 
+
+Experimental Dockerfile 1: Uses tb-updater and tb-starter from Whonix to manage Tor Browser updates
+===================================================================================================
+
+This approach has the *distinct* advantage of making it extremely easy to ensure
+an up-to-date Tor Browser Bundle is always available. However, I have used it
+less and think of it as experimental for now.
+
+## Inherit the base container
+        FROM eyedeekay/whonix
+
+## become root, upgrade packages, and install tb-starter and tb-updater from
+## the repos.
+        USER root
+        RUN apt-get update && apt-get dist-upgrade -y
+        RUN apt-get install -y tb-starter tb-updater
+
+## Switch back to the user and prepare to download and install the browser.
+        USER user
+        WORKDIR /home/user
+
+## Install the browser and launch it.
+        CMD update-torbrowser --devbuildpassthrough && torbrowser
+
+Dockerfile 2: Tor Router
+========================
+
+## Inherit the base container
+        FROM alpine:3.7
+
+##
+        ARG TOR_CONTROL_HOST=172.70.70.2
+        ARG TOR_CONTROL_PORT=9151
+        ARG TOR_SOCKS_HOST=172.70.70.2
+        ARG TOR_SOCKS_PORT=9150
+
+## Install and configure Tor
+        RUN apk update && apk add tor
+        COPY torrc /etc/tor/torrc
+
+## Assure that torrc contains the values passed to docker build
+        RUN sed -i "s|172.70.70.2|$TOR_CONTROL_HOST|g" /etc/tor/torrc
+        RUN sed -i "s|9151|$TOR_CONTROL_PORT|g" /etc/tor/torrc
+        RUN sed -i "s|172.70.70.2|$TOR_SOCKS_HOST|g" /etc/tor/torrc
+        RUN sed -i "s|9150|$TOR_SOCKS_PORT|g" /etc/tor/torrc
+
+## Create and set permissions on directories for Tor to use
+        RUN mkdir -p /var/lib/tor
+        RUN chown -R tor /var/lib/tor
+        RUN chmod -R 2700 /var/lib/tor
+        RUN chmod -R o+rw /var/lib/tor
+
+## Set user to tor router system user and prepare to start Tor
+        USER tor
+        CMD tor -f /etc/tor/torrc
+
+
+Optional Dockerfile 3: Snowflake Pluggable Transport
+====================================================
+
+I'm a a big fan of Snowflake, conceptually, hopefully someday soon I'll be able
+to develop the skills required to help make it suitable for inclusion in the
+mainline TBB. Tgus container sets up a Snowflake PT for Tor to use on a
+pre-configured container. Be aware that Snowflake is still considered
+experimental by TPO and they know what they are doing.
 
 ### TL:DR
 

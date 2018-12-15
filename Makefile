@@ -51,11 +51,13 @@ docker-torhost: network
 
 torhost: echo docker-torhost network
 	docker run --rm -i -t -d \
+		--user tor \
 		--net tbb \
 		--name tor-host \
 		--hostname tor-host \
 		--link tor-host \
 		--ip $(DEFAULT_HOST) \
+		--volume tor-host:/var \
 		eyedeekay/tor-host; true
 
 browse: echo docker-browser torhost network docker-clean-browser

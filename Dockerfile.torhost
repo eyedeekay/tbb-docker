@@ -3,16 +3,7 @@ ARG TOR_CONTROL_HOST=172.70.70.2
 ARG TOR_CONTROL_PORT=9151
 ARG TOR_SOCKS_HOST=172.70.70.2
 ARG TOR_SOCKS_PORT=9150
-ARG GOPATH="/opt/gopath"
-ENV GOPATH=$GOPATH
-ENV PATH="/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:$GOPATH/bin"
 RUN apk update && apk add tor go git go-tools pkgconfig
-#RUN mkdir -p /opt/gopath/src/snowflake/
-#RUN go get -u github.com/keroserene/go-webrtc
-#RUN git clone https://git.torproject.org/pluggable-transports/snowflake.git /opt/gopath/src/snowflake/
-#WORKDIR opt/gopath/src/snowflake/client
-#RUN go get
-#RUN go build
 COPY torrc /etc/tor/torrc
 RUN sed -i "s|172.70.70.2|$TOR_CONTROL_HOST|g" /etc/tor/torrc
 RUN sed -i "s|9151|$TOR_CONTROL_PORT|g" /etc/tor/torrc

@@ -1,7 +1,11 @@
 FROM eyedeekay/whonix
+## become root, upgrade packages, and install tb-starter and tb-updater from
+## the repos.
 USER root
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install -y tb-starter tb-updater
+## Switch back to the user and prepare to download and install the browser.
 USER user
 WORKDIR /home/user
+## Install the browser and launch it.
 CMD update-torbrowser --devbuildpassthrough && torbrowser
